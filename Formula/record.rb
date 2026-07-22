@@ -4,9 +4,9 @@
 class Record < Formula
   desc "Native macOS app capture and local transcription CLI"
   homepage "https://github.com/jlave-dev/record"
-  url "https://github.com/jlave-dev/record/releases/download/v0.4.1/record-0.4.1-macos-arm64.tar.gz"
-  version "0.4.1"
-  sha256 "9bbc884ddb4130f08f0eba548c0b81bce19ccdc807fa7dabb9df0d00bd157525"
+  url "https://github.com/jlave-dev/record/releases/download/v0.5.0/record-0.5.0-macos-arm64.tar.gz"
+  version "0.5.0"
+  sha256 "f86d77093c3b66524572fb11007c1065ee2e315365e8be121d63e24e66520ced"
   license "MIT"
 
   depends_on arch: :arm64
@@ -16,6 +16,18 @@ class Record < Formula
 
   def install
     prefix.install Dir["*"]
+  end
+
+  def caveats
+    <<~EOS
+      First live use requests Screen & System Audio Recording permission and
+      prepares an approximately 430 MB local model automatically:
+        record live start --app zoom
+
+      Optional agent adapters:
+        record plugin install --codex
+        record plugin install --claude
+    EOS
   end
 
   test do
