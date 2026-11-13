@@ -4,9 +4,9 @@
 class Record < Formula
   desc "Native macOS app capture and local transcription CLI"
   homepage "https://github.com/jlave-dev/record"
-  url "https://github.com/jlave-dev/record/releases/download/v0.5.3/record-0.5.3-macos-arm64.tar.gz"
-  version "0.5.3"
-  sha256 "6e693018dd02d6bb269c2443f509e96554c60319b20b7411263fb8561f0332dd"
+  url "https://github.com/jlave-dev/record/releases/download/v0.5.4/record-0.5.4-macos-arm64.tar.gz"
+  version "0.5.4"
+  sha256 "5d6a800dc1a193704b649af96ba85f3a95a841e06b9cd0c27a662cdcb1c8348f"
   license "MIT"
 
   depends_on arch: :arm64
@@ -16,10 +16,6 @@ class Record < Formula
 
   def install
     prefix.install Dir["*"]
-  end
-
-  def post_install
-    system bin/"record", "plugin", "refresh"
   end
 
   def caveats
@@ -32,7 +28,9 @@ class Record < Formula
         record plugin install --codex
         record plugin install --claude
 
-      Installed adapters refresh automatically during future Homebrew upgrades.
+      After upgrades, installed adapters refresh on the first runtime command.
+      To refresh before starting an agent session, run:
+        record plugin refresh
       Restart the agent app to load the new plugin version.
     EOS
   end
@@ -40,5 +38,8 @@ class Record < Formula
   test do
     assert_equal version.to_s, shell_output("#{bin}/record --version").strip
     assert_match "record plugin <install", shell_output("#{bin}/record --help")
+    system libexec/"record/capture/capture", "--help"
+    system libexec/"record/transcribe", "--help"
+    system libexec/"record/live/live", "--help"
   end
 end
